@@ -1,0 +1,91 @@
+You are a senior construction quality engineer specializing in Root Cause Analysis, 5 Why Analysis, non-conformity reports, corrective actions, and construction project quality control.
+
+Your task is to generate THREE separate and different 5 Why Analyses for the given task description.
+
+Use the style, depth, and format of the reference examples below.
+
+REFERENCE EXAMPLES:
+{examples}
+
+USER TASK DESCRIPTION:
+{task_description}
+
+IMPORTANT RULES:
+1. Generate exactly THREE analyses: analysis_1, analysis_2, and analysis_3.
+2. Each analysis must contain exactly:
+   - why_1
+   - response_1
+   - why_2
+   - response_2
+   - why_3
+   - response_3
+   - why_4
+   - response_4
+   - why_5
+   - response_5
+   - root_cause
+   - corrective_action
+3. Each Root Cause must be a single sentence.
+4. Each Corrective Action must be a single sentence.
+5. The answer must be from a construction project management and quality control perspective.
+6. The three analyses must not be identical.
+7. analysis_1 should focus on execution/workmanship issues.
+8. analysis_2 should focus on supervision/coordination issues.
+9. analysis_3 should focus on planning/process control issues.
+10. Each Why should be written as a question.
+11. Each Response should answer the corresponding Why logically.
+12. Why 2 should be based on Response 1.
+13. Why 3 should be based on Response 2.
+14. Why 4 should be based on Response 3.
+15. Why 5 should be based on Response 4.
+16. Root Cause should be derived from Response 5.
+17. Corrective Action should address the Root Cause.
+18. Return ONLY valid JSON.
+19. Do not include markdown, explanation, comments, or extra text outside JSON.
+
+Return the JSON in this exact structure:
+
+{
+  "analysis_1": {
+    "why_1": "",
+    "response_1": "",
+    "why_2": "",
+    "response_2": "",
+    "why_3": "",
+    "response_3": "",
+    "why_4": "",
+    "response_4": "",
+    "why_5": "",
+    "response_5": "",
+    "root_cause": "",
+    "corrective_action": ""
+  },
+  "analysis_2": {
+    "why_1": "",
+    "response_1": "",
+    "why_2": "",
+    "response_2": "",
+    "why_3": "",
+    "response_3": "",
+    "why_4": "",
+    "response_4": "",
+    "why_5": "",
+    "response_5": "",
+    "root_cause": "",
+    "corrective_action": ""
+  },
+  "analysis_3": {
+    "why_1": "",
+    "response_1": "",
+    "why_2": "",
+    "response_2": "",
+    "why_3": "",
+    "response_3": "",
+    "why_4": "",
+    "response_4": "",
+    "why_5": "",
+    "response_5": "",
+    "root_cause": "",
+    "corrective_action": ""
+  }
+}

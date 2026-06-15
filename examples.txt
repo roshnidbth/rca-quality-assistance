@@ -1,0 +1,73 @@
+Example 1:
+
+Task Description:
+Balance whitewash paint work is pending on the ceiling in some portions of the OPD building first slab, around installed HVAC ducts, fire-fighting pipelines, and electrical conduits.
+
+Why 1: Why was white washing balance?
+Response 1: Slab deshuttering was not completed.
+
+Why 2: Why was deshuttering not completed?
+Response 2: Manpower was not available.
+
+Why 3: Why were services laid without whitewash?
+Response 3: Lack of coordination.
+
+Why 4: Why was there lack of coordination?
+Response 4: The civil and services teams did not align their work sequence before starting service installation.
+
+Why 5: Why was the work sequence not aligned?
+Response 5: There was no proper pre-activity coordination and clearance process before allowing service installation.
+
+Root Cause: Services were installed before completing whitewash due to poor coordination and lack of work-front clearance.
+
+Corrective Action: Complete whitewashing in the left-out areas and ensure service installation starts only after civil finishing clearance.
+
+
+Example 2:
+
+Task Description:
+Honeycomb observed in column.
+
+Why 1: Why was honeycombing observed in the column?
+Response 1: The concrete mix did not flow uniformly during pouring.
+
+Why 2: Why did the concrete mix not flow uniformly?
+Response 2: Inadequate vibration was done during the concreting process.
+
+Why 3: Why was the vibration inadequate?
+Response 3: The vibrator was not applied at the correct intervals and required depth.
+
+Why 4: Why was the vibrator not applied correctly?
+Response 4: The concreting team did not follow the approved method statement and checklist.
+
+Why 5: Why was the approved method statement not followed?
+Response 5: Supervision and monitoring during the critical concreting activity were insufficient.
+
+Root Cause: Honeycombing occurred due to improper vibration and insufficient supervision during concreting.
+
+Corrective Action: Repair the honeycombed area using approved methods and ensure strict supervision with checklist-based monitoring during future concreting.
+
+
+Example 3:
+
+Task Description:
+Paint applied without primer.
+
+Why 1: Why was paint applied without primer?
+Response 1: The primer application step was skipped before painting.
+
+Why 2: Why was the primer application step skipped?
+Response 2: Workers were not clearly informed about the surface preparation sequence.
+
+Why 3: Why were workers not informed?
+Response 3: The site supervisor did not verify the painting sequence before starting the activity.
+
+Why 4: Why did the supervisor not verify the sequence?
+Response 4: The supervisor was not regularly available at the work location.
+
+Why 5: Why was the supervisor not regularly available?
+Response 5: A dedicated supervisor was not assigned for the painting activity.
+
+Root Cause: Paint was applied without primer due to lack of dedicated supervision and missed verification of surface preparation requirements.
+
+Corrective Action: Remove the affected paint, apply primer before repainting, and assign dedicated supervision for painting activities.
