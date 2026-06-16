@@ -265,4 +265,3 @@ This project is developed for educational and industrial quality management purp
 
 ---
 
-This version looks professional enough for recruiters, internship mentors, GitHub visitors, and company reviewers.
