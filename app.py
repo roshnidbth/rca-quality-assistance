@@ -3,6 +3,7 @@ import json
 import streamlit as st
 from dotenv import load_dotenv
 from google import genai
+from groq import Groq
 
 
 # -----------------------------
@@ -37,58 +38,127 @@ def clean_json_response(response_text):
 
     return response_text
 
+def generate_with_groq(prompt):
+    groq_api_key = os.getenv("GROQ_API_KEY")
 
-def generate_rca(task_description):
-    """Generate RCA using Gemini API with fallback models."""
-    load_dotenv()
+    if not groq_api_key:
+        groq_api_key = st.secrets.get("GROQ_API_KEY", None)
 
-    api_key = os.getenv("GEMINI_API_KEY")
+    if not groq_api_key:
+        raise Exception("Groq API key not found")
 
-    if not api_key:
-        api_key = st.secrets.get("GEMINI_API_KEY", None)
+    client = Groq(api_key=groq_api_key)
 
-    if not api_key:
-        st.error("GEMINI_API_KEY not found. Please add it in Streamlit Secrets.")
-        return None
+    response = client.chat.completions.create(
+        model="llama-3.3-70b-versatile",
+        messages=[
+            {
+                "role": "user",
+                "content": prompt
+            }
+        ],
+        temperature=0.3
+    )
 
-    client = genai.Client(api_key=api_key)
-    prompt = build_prompt(task_description)
+    return response.choices[0].message.content
 
-    models_to_try = [
-        "gemini-2.5-flash-lite",
-        "gemini-2.5-flash",
-        "gemini-2.0-flash",
-        "gemini-2.0-flash-lite"
+
+def generate_with_groq(prompt):
+    groq_api_key = os.getenv("GROQ_API_KEY")
+
+    if not groq_api_key:
+        groq_api_key = st.secrets.get("GROQ_API_KEY", None)
+
+    if not groq_api_key:
+        raise Exception("Groq API key not found")
+
+    client = Groq(api_key=groq_api_key)
+
+    groq_models = [
+        "llama-3.3-70b-versatile",
+        "llama-3.1-8b-instant"
     ]
 
     last_error = ""
 
-    for model_name in models_to_try:
+    for model_name in groq_models:
         try:
-            response = client.models.generate_content(
+            response = client.chat.completions.create(
                 model=model_name,
-                contents=prompt
+                messages=[
+                    {
+                        "role": "user",
+                        "content": prompt
+                    }
+                ],
+                temperature=0.3
             )
 
-            cleaned_response = clean_json_response(response.text)
-            rca_data = json.loads(cleaned_response)
-
-            st.caption(f"Generated using model: {model_name}")
-            return rca_data
+            st.caption(f"Generated using model: Groq {model_name}")
+            return response.choices[0].message.content
 
         except Exception as e:
-            error_text = str(e)
-            last_error = error_text
-
-            st.info("Trying backup model...")
-            
-
+            last_error = str(e)
             continue
 
-    st.error("Daily AI quota exhausted. Please try again later.")
-    st.text(last_error)
-    return None
+    raise Exception(f"All Groq models failed: {last_error}")
 
+def generate_rca(task_description):
+    """Generate RCA using Gemini first, then Groq as fallback."""
+
+    load_dotenv()
+
+    prompt = build_prompt(task_description)
+
+    # -------------------------
+    # GEMINI FALLBACK MODELS
+    # -------------------------
+
+    gemini_api_key = os.getenv("GEMINI_API_KEY")
+
+    if not gemini_api_key:
+        gemini_api_key = st.secrets.get("GEMINI_API_KEY", None)
+
+    gemini_models = [
+        "gemini-2.5-flash-lite",
+        "gemini-2.5-flash"
+    ]
+
+    if gemini_api_key:
+        gemini_client = genai.Client(api_key=gemini_api_key)
+
+        for model_name in gemini_models:
+            try:
+                response = gemini_client.models.generate_content(
+                    model=model_name,
+                    contents=prompt
+                )
+
+                cleaned_response = clean_json_response(response.text)
+                rca_data = json.loads(cleaned_response)
+
+                st.caption(f"Generated using model: {model_name}")
+                return rca_data
+
+            except Exception:
+                continue
+
+    # -------------------------
+    # GROQ FALLBACK MODELS
+    # -------------------------
+
+    try:
+        groq_response = generate_with_groq(prompt)
+
+        cleaned_response = clean_json_response(groq_response)
+        rca_data = json.loads(cleaned_response)
+
+        return rca_data
+
+    except Exception as e:
+        st.error("Daily quota for all the models exhausted. Please try again later.")
+        st.text(str(e))
+        return None
 
 def display_analysis(title, analysis):
     """Display one RCA analysis in a clean format."""
