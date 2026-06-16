@@ -39,36 +39,55 @@ def clean_json_response(response_text):
 
 
 def generate_rca(task_description):
-    """Generate RCA using Gemini API."""
+    """Generate RCA using Gemini API with fallback models."""
     load_dotenv()
 
     api_key = os.getenv("GEMINI_API_KEY")
 
     if not api_key:
-        api_key = st.secrets.get("GEMINI_API_KEY")
+        api_key = st.secrets.get("GEMINI_API_KEY", None)
 
     if not api_key:
-        raise ValueError("GEMINI_API_KEY not found. Please add it in the .env file.")
+        st.error("GEMINI_API_KEY not found. Please add it in Streamlit Secrets.")
+        return None
 
     client = genai.Client(api_key=api_key)
-
     prompt = build_prompt(task_description)
 
-    response = client.models.generate_content(
-        model="gemini-2.5-flash",
-        contents=prompt
-    )
+    models_to_try = [
+        "gemini-2.5-flash-lite",
+        "gemini-2.5-flash",
+        "gemini-2.0-flash",
+        "gemini-2.0-flash-lite"
+    ]
 
-    cleaned_response = clean_json_response(response.text)
+    last_error = ""
 
-    try:
-        rca_data = json.loads(cleaned_response)
-        return rca_data
+    for model_name in models_to_try:
+        try:
+            response = client.models.generate_content(
+                model=model_name,
+                contents=prompt
+            )
 
-    except json.JSONDecodeError:
-        st.error("The model did not return valid JSON.")
-        st.text_area("Raw Model Response", response.text, height=300)
-        return None
+            cleaned_response = clean_json_response(response.text)
+            rca_data = json.loads(cleaned_response)
+
+            st.caption(f"Generated using model: {model_name}")
+            return rca_data
+
+        except Exception as e:
+            error_text = str(e)
+            last_error = error_text
+
+            st.info("Trying backup model...")
+            
+
+            continue
+
+    st.error("Daily AI quota exhausted. Please try again later.")
+    st.text(last_error)
+    return None
 
 
 def display_analysis(title, analysis):
